@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1e293b">
+<meta name="description" content="Learn how to improve your case study using AI assistants.">
+<title>How to Improve the Case Study – Case Study Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #faf8f5;
+  --bg-card: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --accent: #4a6fa5;
+  --accent-light: #e8eef6;
+  --accent-hover: #3b5d8f;
+  --border: #e2e0db;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --font-serif: 'Crimson Pro', Georgia, serif;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --max-w: 720px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --text-light: #64748b;
+    --accent: #60a5fa;
+    --accent-light: #1e3a5f;
+    --accent-hover: #93c5fd;
+    --border: #334155;
+  }
+  .prompt-text {
+    color: #e2e8f0;
+  }
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: var(--max-w);
+  width: 100%;
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+.back-link:hover { text-decoration: underline; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+.card p:last-child { margin-bottom: 0; }
+
+.card ol {
+  margin: 0.5rem 0 1rem 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.prompt-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.prompt-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.prompt-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.copy-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.copy-btn:active { transform: translateY(0); }
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text);
+  color: var(--bg);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 100;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+@media print {
+  .back-link, .copy-btn { display: none !important; }
+  body { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-link">← Back to Case Study Builder</a>
+
+  <h1><span>✨</span> How to Improve the Case Study</h1>
+
+  <div class="card">
+    <p>Before submitting your case study for evaluation, consider using an AI assistant like ChatGPT, Claude, or Gemini to refine and expand your draft into a more comprehensive version. This step can help polish structure, add depth to analysis, and ensure clarity without changing core facts.</p>
+    <p><strong>Steps:</strong></p>
+    <ol>
+      <li>Download your case study using one of the export options (Word, Markdown, or JSON).</li>
+      <li>Open the AI assistant of your choice.</li>
+      <li>Copy the recommended prompt below and paste it into the assistant.</li>
+      <li>Attach or paste your downloaded case study draft.</li>
+      <li>Review the AI-enhanced version and make any final adjustments before submission.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Recommended Prompt</div>
+    <div class="prompt-box">
+      <div class="prompt-label">Click to Copy</div>
+      <button class="copy-btn" onclick="copyPrompt()">📋 Copy Prompt</button>
+      <div class="prompt-text" id="promptText">You are an expert business case study writer for management education. Take this draft case study attached and revise as needed.
+
+Develop it into a full, professional case study (2,000-4,000 words) without adding new facts, misrepresenting any details, or fabricating data—only enhance clarity, expand analysis, improve flow, and elaborate on existing elements using logical inference. Minor modifications that don't significantly change the case study are welcome if they permit the case study to be crafted better.
+
+Structure it with these sections:
+- Executive Summary (200-300 words)
+- Company Background (expanded from overview)
+- Detailed Problem Statement (with context and implications)
+- Key Stakeholders and Perspectives
+- Decision Options (pros/cons, risks for each)
+- Constraints (financial, timeline, ethical/regulatory)
+- In-Depth Analysis (apply 2-3 frameworks like SWOT, Porter's Five Forces, PESTEL)
+- Discussion Questions (8-10 refined, open-ended ones)
+- Teaching Notes (optional: potential outcomes, key lessons)
+
+Use engaging, academic language. Add transitions, examples from the draft, and quantitative emphasis where present. Ensure neutrality and focus on decision-making.</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
+
+function copyPrompt() {
+  var text = document.getElementById('promptText').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('Prompt copied to clipboard!');
+    }).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+
+  function fallbackCopy() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Prompt copied to clipboard!');
+  }
+}
+</script>
+</body>
+</html>
