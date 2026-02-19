@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1e293b">
+<meta name="description" content="A step-by-step tool for building management case studies. Designed for classroom use.">
+<title>Case Study Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<!-- PWA Manifest (inline via link blob) -->
+<script>
+(function(){
+  const manifest = {
+    name: "Case Study Builder",
+    short_name: "CaseBuilder",
+    description: "Step-by-step management case study generator for classroom use.",
+    start_url: ".",
+    display: "standalone",
+    background_color: "#faf8f5",
+    theme_color: "#1e293b",
+    icons: []
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = URL.createObjectURL(blob);
+  document.head.appendChild(link);
+})();
+</script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #faf8f5;
+  --bg-card: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --accent: #4a6fa5;
+  --accent-light: #e8eef6;
+  --accent-hover: #3b5d8f;
+  --gold: #b8860b;
+  --gold-light: #f5e6c8;
+  --border: #e2e0db;
+  --border-light: #f0eee9;
+  --danger: #b91c1c;
+  --success: #15803d;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.06);
+  --font-serif: 'Crimson Pro', Georgia, serif;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --max-w: 720px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+.app-header {
+  background: var(--text);
+  color: #fff;
+  padding: 1.25rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.app-header-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.app-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.app-subtitle {
+  font-size: 0.78rem;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+.header-badge {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(255,255,255,0.12);
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* ── Progress ── */
+.progress-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 0;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.progress-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+/* ── Step indicators ── */
+.step-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.step-dot.active { background: var(--accent); transform: scale(1.3); }
+.step-dot.done { background: var(--gold); }
+
+/* ── Main container ── */
+.main {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 1.5rem;
+  min-height: calc(100vh - 200px);
+}
+
+/* ── Card ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  animation: cardIn 0.35s ease-out;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-header {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+}
+.card-step-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
+.card-hint {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* ── Form elements ── */
+.field { margin-bottom: 1.25rem; }
+.field:last-child { margin-bottom: 0; }
+.field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+.field .optional {
+  font-weight: 400;
+  color: var(--text-light);
+  font-size: 0.78rem;
+}
+input[type="text"], input[type="number"], select, textarea {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  line-height: 1.5;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.12);
+}
+textarea { resize: vertical; min-height: 80px; }
+select { cursor: pointer; }
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+.radio-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--bg);
+  user-select: none;
+}
+.radio-pill:hover { border-color: var(--accent); background: var(--accent-light); }
+.radio-pill input { display: none; }
+.radio-pill.selected {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ── Dynamic list (stakeholders, options) ── */
+.dynamic-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.dynamic-item {
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 1rem;
+  position: relative;
+  animation: cardIn 0.25s ease-out;
+}
+.dynamic-item .item-num {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.dynamic-item .remove-btn {
+  position: absolute;
+  top: 0.6rem; right: 0.6rem;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all var(--transition);
+}
+.dynamic-item .remove-btn:hover { color: var(--danger); background: #fef2f2; }
+
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: none;
+  border: 1px dashed var(--accent);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 0.5rem;
+}
+.add-btn:hover { background: var(--accent-light); }
+
+/* ── Navigation ── */
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.75rem;
+  gap: 1rem;
+}
+.btn {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.65rem 1.5rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn-secondary {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--bg); color: var(--text); border-color: var(--text-light); }
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+}
+.btn-gold:hover { background: #9a7209; transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn-danger {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid #fecaca;
+}
+.btn-danger:hover { background: #fef2f2; }
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ── Result view ── */
+.result-wrap {
+  animation: cardIn 0.4s ease-out;
+}
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.result-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: #2d3748;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.result-content h1 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+  color: var(--text);
+}
+.result-content .case-meta {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--border-light);
+}
+.result-content h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border-light);
+}
+.result-content p { margin-bottom: 0.85rem; }
+.result-content ul, .result-content ol {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+.result-content li { margin-bottom: 0.4rem; }
+.result-content strong { color: var(--text); }
+.result-content .discussion-q {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text);
+  color: #fff;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Footer ── */
+.app-footer {
+  max-width: var(--max-w);
+  margin: 3rem auto 0;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid var(--border-light);
+}
+.app-footer p {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+.app-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.app-footer a:hover { text-decoration: underline; }
+
+/* ── Print styles ── */
+@media print {
+  .app-header, .progress-wrap, .nav-row, .result-actions, .app-footer, .step-dots { display: none !important; }
+  .main { padding: 0; }
+  .result-content {
+    max-height: none;
+    overflow: visible;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    font-size: 11pt;
+  }
+  .result-content h1 { font-size: 18pt; }
+  .result-content h2 { font-size: 14pt; page-break-after: avoid; }
+  .result-content .discussion-q { background: #f0f0f0 !important; -webkit-print-color-adjust: exact; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .card { padding: 1.25rem; }
+  .card-title { font-size: 1.3rem; }
+  .result-content { padding: 1.25rem; font-size: 0.95rem; }
+  .result-actions { flex-direction: column; }
+  .result-actions .btn { width: 100%; justify-content: center; }
+  .nav-row { flex-direction: column-reverse; }
+  .nav-row .btn { width: 100%; justify-content: center; }
+  .app-header-inner { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="app-header">
+  <div class="app-header-inner">
+    <div>
+      <div class="app-title">Case Study Builder</div>
+      <div class="app-subtitle">Management Teaching Tool</div>
+    </div>
+    <div class="header-badge">Client-Side Only</div>
+  </div>
+</header>
+
+<!-- Progress -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-label">
+    <span id="stepLabel">Step 1 of 6</span>
+    <span id="stepName">Case Context</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="step-dots" id="stepDots"></div>
+</div>
+
+<!-- Main -->
+<main class="main" id="app"></main>
+
+<!-- Footer -->
+<footer class="app-footer">
+  <p>
+    <strong>Case Study Builder</strong> is a teaching tool for management classes.<br>
+    All data stays in your browser. Nothing is sent to any server.<br>
+    Conceptualized by <a href="https://www.linkedin.com/in/beingbabu/" target="_blank" rel="noopener">Professor Babu George</a>.
+  </p>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── State ──
+  const STEPS = [
+    { key: 'context', label: 'Case Context' },
+    { key: 'decision_maker', label: 'Key Decision Maker' },
+    { key: 'problem', label: 'Problem or Opportunity' },
+    { key: 'stakeholders', label: 'Stakeholders' },
+    { key: 'options', label: 'Available Options' },
+    { key: 'constraints', label: 'Constraints & Data' }
+  ];
+
+  let currentStep = 0;
+  let showingResult = false;
+
+  const data = {
+    title: '', industry: '', company: '', region: '', year: new Date().getFullYear().toString(),
+    role: '', experience: '', background: '',
+    problem: '', problemType: '',
+    stakeholders: [{ name: '', interest: '' }],
+    options: [{ title: '', description: '', implication: '' }, { title: '', description: '', implication: '' }],
+    budget: '', timeline: '', ethicalConstraints: ''
+  };
+
+  const $ = id => document.getElementById(id);
+  const app = $('app');
+
+  // ── Toast ──
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ── Progress ──
+  function updateProgress() {
+    if (showingResult) {
+      $('progressWrap').style.display = 'none';
+      return;
+    }
+    $('progressWrap').style.display = '';
+    const pct = ((currentStep + 1) / STEPS.length) * 100;
+    $('progressFill').style.width = pct + '%';
+    $('stepLabel').textContent = `Step ${currentStep + 1} of ${STEPS.length}`;
+    $('stepName').textContent = STEPS[currentStep].label;
+
+    const dots = $('stepDots');
+    dots.innerHTML = '';
+    STEPS.forEach((s, i) => {
+      const d = document.createElement('div');
+      d.className = 'step-dot' + (i === currentStep ? ' active' : '') + (i < currentStep ? ' done' : '');
+      d.title = s.label;
+      d.addEventListener('click', () => { if (i < currentStep) { saveCurrentStep(); currentStep = i; render(); } });
+      dots.appendChild(d);
+    });
+  }
+
+  // ── Save inputs from DOM into data ──
+  function saveCurrentStep() {
+    switch (currentStep) {
+      case 0:
+        data.title = v('f-title');
+        data.industry = v('f-industry');
+        data.company = v('f-company');
+        data.region = v('f-region');
+        data.year = v('f-year');
+        break;
+      case 1:
+        data.role = v('f-role');
+        data.experience = v('f-exp');
+        data.background = v('f-bg');
+        break;
+      case 2:
+        data.problem = v('f-problem');
+        const sel = document.querySelector('.radio-pill.selected input');
+        data.problemType = sel ? sel.value : '';
+        break;
+      case 3:
+        data.stakeholders = [];
+        document.querySelectorAll('.sh-item').forEach(el => {
+          const name = el.querySelector('.sh-name')?.value?.trim() || '';
+          const interest = el.querySelector('.sh-interest')?.value?.trim() || '';
+          if (name) data.stakeholders.push({ name, interest });
+        });
+        if (data.stakeholders.length === 0) data.stakeholders.push({ name: '', interest: '' });
+        break;
+      case 4:
+        data.options = [];
+        document.querySelectorAll('.opt-item').forEach(el => {
+          const title = el.querySelector('.opt-title')?.value?.trim() || '';
+          const desc = el.querySelector('.opt-desc')?.value?.trim() || '';
+          const imp = el.querySelector('.opt-imp')?.value?.trim() || '';
+          if (title) data.options.push({ title, description: desc, implication: imp });
+        });
+        if (data.options.length < 2) {
+          while (data.options.length < 2) data.options.push({ title: '', description: '', implication: '' });
+        }
+        break;
+      case 5:
+        data.budget = v('f-budget');
+        data.timeline = v('f-timeline');
+        data.ethicalConstraints = v('f-ethics');
+        break;
+    }
+  }
+
+  function v(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+  // ── Render ──
+  function render() {
+    updateProgress();
+    if (showingResult) return renderResult();
+
+    let html = '<div class="card">';
+    html += `<div class="card-header">
+      <div class="card-step-label">Step ${currentStep + 1} of ${STEPS.length}</div>
+      <div class="card-title">${STEPS[currentStep].label}</div>`;
+
+    switch (currentStep) {
+      case 0:
+        html += `<div class="card-hint">Set the scene for your case study. Where and when does it take place?</div></div>`;
+        html += field('Title', 'f-title', 'text', data.title, 'e.g., "Digital Transformation at Acme Corp"');
+        html += fieldSelect('Industry', 'f-industry', data.industry, ['','Technology','Healthcare','Finance','Retail','Manufacturing','Education','Energy','Hospitality','Transportation','Other']);
+        html += field('Company Name', 'f-company', 'text', data.company, 'Real or fictional', true);
+        html += field('Country or Region', 'f-region', 'text', data.region, 'e.g., United States, Southeast Asia');
+        html += field('Year', 'f-year', 'text', data.year, 'e.g., 2024 or "current year"');
+        break;
+
+      case 1:
+        html += `<div class="card-hint">Who is the protagonist? Describe the person facing the decision.</div></div>`;
+        html += field('Role / Title', 'f-role', 'text', data.role, 'e.g., CEO, Department Head, Project Manager');
+        html += field('Years of Experience', 'f-exp', 'number', data.experience, 'Approximate number');
+        html += fieldTextarea('Previous Background', 'f-bg', data.background, 'Briefly describe their career path or relevant expertise (2-3 sentences).', 3);
+        break;
+
+      case 2:
+        html += `<div class="card-hint">What challenge or opportunity does the decision maker face? Be specific.</div></div>`;
+        html += fieldTextarea('Situation Description', 'f-problem', data.problem, 'Describe the core problem or opportunity in 2-3 sentences.', 4);
+        html += `<div class="field"><label>Category <span class="optional">(optional)</span></label>`;
+        html += radioGroup('problemType', ['Strategic','Operational','Leadership / HR','Ethics','Risk / Finance'], data.problemType);
+        html += `</div>`;
+        break;
+
+      case 3:
+        html += `<div class="card-hint">Who has a stake in this decision? Think about employees, customers, investors, regulators, and others.</div></div>`;
+        html += `<div class="dynamic-list" id="sh-list">`;
+        data.stakeholders.forEach((s, i) => {
+          html += stakeholderItem(i, s);
+        });
+        html += `</div>`;
+        html += `<button class="add-btn" onclick="addStakeholder()">+ Add Stakeholder</button>`;
+        break;
+
+      case 4:
+        html += `<div class="card-hint">List 2 to 4 courses of action the decision maker could pursue. Include a short description and one sentence on the likely consequence of each.</div></div>`;
+        html += `<div class="dynamic-list" id="opt-list">`;
+        data.options.forEach((o, i) => {
+          html += optionItem(i, o);
+        });
+        html += `</div>`;
+        if (data.options.length < 4) {
+          html += `<button class="add-btn" onclick="addOption()">+ Add Option</button>`;
+        }
+        break;
+
+      case 5:
+        html += `<div class="card-hint">What real-world constraints does the decision maker face? These make the case more realistic and thought-provoking.</div></div>`;
+        html += fieldTextarea('Budget Limitations', 'f-budget', data.budget, 'e.g., "$500K allocated for this initiative"', 2);
+        html += fieldTextarea('Time Constraints', 'f-timeline', data.timeline, 'e.g., "Decision needed within 3 months"', 2);
+        html += fieldTextarea('Ethical or Regulatory Constraints', 'f-ethics', data.ethicalConstraints, 'e.g., "GDPR compliance required; union agreements in place"', 3);
+        break;
+    }
+
+    // Navigation
+    html += `<div class="nav-row">`;
+    if (currentStep > 0) {
+      html += `<button class="btn btn-secondary" onclick="goBack()">&#8592; Back</button>`;
+    } else {
+      html += `<div></div>`;
+    }
+    if (currentStep < STEPS.length - 1) {
+      html += `<button class="btn btn-primary" onclick="goNext()">Next &#8594;</button>`;
+    } else {
+      html += `<button class="btn btn-gold" onclick="generate()">&#9733; Generate Case Study</button>`;
+    }
+    html += `</div></div>`;
+
+    app.innerHTML = html;
+    initRadioPills();
+  }
+
+  // ── Field helpers ──
+  function field(label, id, type, val, placeholder, optional) {
+    const opt = optional ? ` <span class="optional">(optional)</span>` : '';
+    return `<div class="field"><label for="${id}">${label}${opt}</label>
+      <input type="${type}" id="${id}" value="${esc(val)}" placeholder="${esc(placeholder)}"></div>`;
+  }
+  function fieldTextarea(label, id, val, placeholder, rows) {
+    return `<div class="field"><label for="${id}">${label}</label>
+      <textarea id="${id}" rows="${rows}" placeholder="${esc(placeholder)}">${esc(val)}</textarea></div>`;
+  }
+  function fieldSelect(label, id, val, opts) {
+    let h = `<div class="field"><label for="${id}">${label}</label><select id="${id}">`;
+    opts.forEach(o => {
+      const lab = o || '— Select —';
+      h += `<option value="${esc(o)}"${o === val ? ' selected' : ''}>${lab}</option>`;
+    });
+    return h + `</select></div>`;
+  }
+  function radioGroup(name, options, selected) {
+    let h = `<div class="radio-group">`;
+    options.forEach(o => {
+      const s = o === selected ? ' selected' : '';
+      h += `<label class="radio-pill${s}" onclick="toggleRadio(this)">
+        <input type="radio" name="${name}" value="${esc(o)}"${s ? ' checked' : ''}>${o}</label>`;
+    });
+    return h + `</div>`;
+  }
+  function stakeholderItem(i, s) {
+    const rm = data.stakeholders.length > 1 ? `<button class="remove-btn" onclick="removeStakeholder(${i})" title="Remove">&times;</button>` : '';
+    return `<div class="dynamic-item sh-item">
+      ${rm}<div class="item-num">Stakeholder ${i + 1}</div>
+      <div class="field"><label>Name or Group</label><input class="sh-name" type="text" value="${esc(s.name)}" placeholder="e.g., Employees, Board of Directors"></div>
+      <div class="field"><label>Interest or Concern</label><input class="sh-interest" type="text" value="${esc(s.interest)}" placeholder="e.g., Job security, return on investment"></div>
+    </div>`;
+  }
+  function optionItem(i, o) {
+    const rm = data.options.length > 2 ? `<button class="remove-btn" onclick="removeOption(${i})" title="Remove">&times;</button>` : '';
+    return `<div class="dynamic-item opt-item">
+      ${rm}<div class="item-num">Option ${i + 1}</div>
+      <div class="field"><label>Title</label><input class="opt-title" type="text" value="${esc(o.title)}" placeholder="e.g., Invest in AI automation"></div>
+      <div class="field"><label>Description</label><textarea class="opt-desc" rows="2" placeholder="Briefly describe this course of action.">${esc(o.description)}</textarea></div>
+      <div class="field"><label>Likely Implication</label><input class="opt-imp" type="text" value="${esc(o.implication)}" placeholder="One sentence on the expected outcome."></div>
+    </div>`;
+  }
+
+  function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function initRadioPills() {
+    // Already handled via onclick
+  }
+
+  // ── Global handlers ──
+  window.toggleRadio = function(el) {
+    el.closest('.radio-group').querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+  };
+
+  window.goBack = function() { saveCurrentStep(); currentStep--; render(); window.scrollTo(0,0); };
+  window.goNext = function() { saveCurrentStep(); currentStep++; render(); window.scrollTo(0,0); };
+
+  window.addStakeholder = function() {
+    saveCurrentStep();
+    data.stakeholders.push({ name: '', interest: '' });
+    render();
+  };
+  window.removeStakeholder = function(i) {
+    saveCurrentStep();
+    data.stakeholders.splice(i, 1);
+    render();
+  };
+  window.addOption = function() {
+    saveCurrentStep();
+    data.options.push({ title: '', description: '', implication: '' });
+    render();
+  };
+  window.removeOption = function(i) {
+    saveCurrentStep();
+    data.options.splice(i, 1);
+    render();
+  };
+
+  // ── Generate ──
+  window.generate = function() {
+    saveCurrentStep();
+    showingResult = true;
+    render();
+    window.scrollTo(0,0);
+  };
+
+  window.startOver = function() {
+    if (!confirm('Start over? All your inputs will be cleared.')) return;
+    Object.keys(data).forEach(k => {
+      if (Array.isArray(data[k])) {
+        if (k === 'stakeholders') data[k] = [{ name: '', interest: '' }];
+        else if (k === 'options') data[k] = [{ title: '', description: '', implication: '' }, { title: '', description: '', implication: '' }];
+      } else {
+        data[k] = k === 'year' ? new Date().getFullYear().toString() : '';
+      }
+    });
+    currentStep = 0;
+    showingResult = false;
+    render();
+    window.scrollTo(0,0);
+  };
+
+  // ── Build case text ──
+  function buildCaseHTML() {
+    const title = data.title || 'Untitled Case Study';
+    const yr = data.year || new Date().getFullYear();
+    const industry = data.industry || 'Not specified';
+    const region = data.region || 'Not specified';
+    const company = data.company || 'the organization';
+    const companyDisplay = data.company || '[Company]';
+
+    let meta = `${industry} · ${region} · ${yr}`;
+    if (data.company) meta = `${data.company} · ` + meta;
+
+    let h = `<h1>${esc(title)}</h1><div class="case-meta">${esc(meta)}</div>`;
+
+    // Company Overview
+    h += `<h2>Company Overview</h2>`;
+    h += `<p>${esc(companyDisplay)} operates in the <strong>${esc(industry.toLowerCase())}</strong> sector in <strong>${esc(region)}</strong>.`;
+    if (data.role) {
+      h += ` The case centers on a <strong>${esc(data.role)}</strong>`;
+      if (data.experience) h += ` with approximately ${esc(data.experience)} years of professional experience`;
+      h += `.`;
+    }
+    if (data.background) {
+      h += ` ${esc(data.background)}`;
+    }
+    h += `</p>`;
+
+    // Problem
+    h += `<h2>Background and ${data.problemType === 'Ethics' ? 'Ethical Dilemma' : 'Problem Statement'}</h2>`;
+    if (data.problemType) {
+      h += `<p><strong>Category:</strong> ${esc(data.problemType)}</p>`;
+    }
+    h += `<p>${esc(data.problem || 'No problem description provided.')}</p>`;
+
+    // Stakeholders
+    const validSH = data.stakeholders.filter(s => s.name);
+    if (validSH.length > 0) {
+      h += `<h2>Key Stakeholders</h2><ul>`;
+      validSH.forEach(s => {
+        h += `<li><strong>${esc(s.name)}</strong>`;
+        if (s.interest) h += `: ${esc(s.interest)}`;
+        h += `</li>`;
+      });
+      h += `</ul>`;
+    }
+
+    // Options
+    const validOpts = data.options.filter(o => o.title);
+    if (validOpts.length > 0) {
+      h += `<h2>Available Options</h2>`;
+      validOpts.forEach((o, i) => {
+        h += `<p><strong>Option ${i + 1}: ${esc(o.title)}</strong><br>`;
+        if (o.description) h += `${esc(o.description)} `;
+        if (o.implication) h += `<em>Implication: ${esc(o.implication)}</em>`;
+        h += `</p>`;
+      });
+    }
+
+    // Constraints
+    if (data.budget || data.timeline || data.ethicalConstraints) {
+      h += `<h2>Constraints</h2>`;
+      if (data.budget) h += `<p><strong>Budget:</strong> ${esc(data.budget)}</p>`;
+      if (data.timeline) h += `<p><strong>Timeline:</strong> ${esc(data.timeline)}</p>`;
+      if (data.ethicalConstraints) h += `<p><strong>Ethical / Regulatory:</strong> ${esc(data.ethicalConstraints)}</p>`;
+    }
+
+    // Discussion Questions
+    h += `<h2>Discussion Questions</h2>`;
+    const questions = generateQuestions(validOpts, validSH);
+    questions.forEach(q => {
+      h += `<div class="discussion-q">${esc(q)}</div>`;
+    });
+
+    return h;
+  }
+
+  function generateQuestions(opts, stakeholders) {
+    const qs = [];
+    if (opts.length >= 1) {
+      qs.push(`What are the short-term and long-term consequences of pursuing "${opts[0].title}"?`);
+    }
+    if (opts.length >= 2) {
+      qs.push(`Compare the risks and benefits of "${opts[0].title}" versus "${opts[1].title}." Which better serves the organization's strategic goals?`);
+    }
+    if (stakeholders.length > 0) {
+      const names = stakeholders.slice(0, 3).map(s => s.name).join(', ');
+      qs.push(`How might the interests of key stakeholders (${names}) conflict, and how should management balance those tensions?`);
+    }
+    qs.push('What additional information would you need before making a final recommendation? How would you obtain it?');
+    if (data.ethicalConstraints) {
+      qs.push('What ethical considerations should guide the decision-making process, and how might they override purely financial logic?');
+    } else {
+      qs.push('If you were in the decision maker\'s position, what would you decide and why? What assumptions underlie your choice?');
+    }
+    return qs.slice(0, 5);
+  }
+
+  // ── Markdown ──
+  function buildMarkdown() {
+    const title = data.title || 'Untitled Case Study';
+    const yr = data.year || new Date().getFullYear();
+    const industry = data.industry || 'Not specified';
+    const region = data.region || 'Not specified';
+    const company = data.company || '[Company]';
+
+    let md = `# ${title}\n\n`;
+    md += `**${company}** · ${industry} · ${region} · ${yr}\n\n---\n\n`;
+
+    md += `## Company Overview\n\n`;
+    md += `${company} operates in the ${industry.toLowerCase()} sector in ${region}.`;
+    if (data.role) {
+      md += ` The case centers on a ${data.role}`;
+      if (data.experience) md += ` with approximately ${data.experience} years of professional experience`;
+      md += `.`;
+    }
+    if (data.background) md += ` ${data.background}`;
+    md += `\n\n`;
+
+    md += `## Background and Problem Statement\n\n`;
+    if (data.problemType) md += `**Category:** ${data.problemType}\n\n`;
+    md += `${data.problem || 'No problem description provided.'}\n\n`;
+
+    const validSH = data.stakeholders.filter(s => s.name);
+    if (validSH.length) {
+      md += `## Key Stakeholders\n\n`;
+      validSH.forEach(s => {
+        md += `- **${s.name}**`;
+        if (s.interest) md += `: ${s.interest}`;
+        md += `\n`;
+      });
+      md += `\n`;
+    }
+
+    const validOpts = data.options.filter(o => o.title);
+    if (validOpts.length) {
+      md += `## Available Options\n\n`;
+      validOpts.forEach((o, i) => {
+        md += `### Option ${i + 1}: ${o.title}\n\n`;
+        if (o.description) md += `${o.description}\n\n`;
+        if (o.implication) md += `*Implication: ${o.implication}*\n\n`;
+      });
+    }
+
+    if (data.budget || data.timeline || data.ethicalConstraints) {
+      md += `## Constraints\n\n`;
+      if (data.budget) md += `**Budget:** ${data.budget}\n\n`;
+      if (data.timeline) md += `**Timeline:** ${data.timeline}\n\n`;
+      if (data.ethicalConstraints) md += `**Ethical / Regulatory:** ${data.ethicalConstraints}\n\n`;
+    }
+
+    md += `## Discussion Questions\n\n`;
+    const questions = generateQuestions(validOpts, validSH);
+    questions.forEach((q, i) => { md += `${i + 1}. ${q}\n`; });
+    md += `\n---\n\n*Generated using the Case Study Builder, a teaching tool conceptualized by [Professor Babu George](https://www.linkedin.com/in/beingbabu/).*\n`;
+
+    return md;
+  }
+
+  // ── Word export (HTML-based .doc) ──
+  function buildWordHTML() {
+    const caseHTML = buildCaseHTML();
+    return `<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  body { font-family: Cambria, Georgia, serif; font-size: 12pt; color: #1e293b; line-height: 1.7; max-width: 7in; margin: 0.5in auto; }
+  h1 { font-size: 20pt; color: #1e293b; margin-bottom: 4pt; }
+  h2 { font-size: 14pt; color: #4a6fa5; border-bottom: 1pt solid #ddd; padding-bottom: 4pt; margin-top: 18pt; }
+  .case-meta { font-family: Calibri, sans-serif; font-size: 10pt; color: #64748b; border-bottom: 2pt solid #eee; padding-bottom: 10pt; margin-bottom: 18pt; }
+  ul, ol { margin-left: 0.3in; }
+  li { margin-bottom: 4pt; }
+  .discussion-q { background: #e8eef6; border-left: 3pt solid #4a6fa5; padding: 8pt 12pt; margin-bottom: 6pt; font-style: italic; }
+  p { margin-bottom: 8pt; }
+  em { color: #555; }
+</style></head><body>${caseHTML}
+<hr style="margin-top:24pt;border:none;border-top:1pt solid #ccc;">
+<p style="font-size:9pt;color:#94a3b8;text-align:center;">Generated using the Case Study Builder, a teaching tool conceptualized by <a href="https://www.linkedin.com/in/beingbabu/">Professor Babu George</a>.</p>
+</body></html>`;
+  }
+
+  // ── Exports ──
+  window.downloadMarkdown = function() {
+    const md = buildMarkdown();
+    const slug = (data.title || 'case_study').replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+    downloadBlob(md, `${slug}.md`, 'text/markdown');
+    showToast('Markdown file downloaded');
+  };
+
+  window.downloadWord = function() {
+    const html = buildWordHTML();
+    const slug = (data.title || 'case_study').replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+    const blob = new Blob(['\ufeff' + html], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${slug}.doc`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Word document downloaded');
+  };
+
+  window.downloadPDF = function() {
+    window.print();
+    showToast('Use your browser\'s Save as PDF option');
+  };
+
+  window.copyMarkdown = function() {
+    const md = buildMarkdown();
+    navigator.clipboard.writeText(md).then(() => showToast('Copied to clipboard')).catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = md;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Copied to clipboard');
+    });
+  };
+
+  function downloadBlob(content, filename, mime) {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ── Render result ──
+  function renderResult() {
+    const caseHTML = buildCaseHTML();
+    app.innerHTML = `<div class="result-wrap">
+      <div class="result-actions">
+        <button class="btn btn-primary" onclick="downloadWord()">&#128196; Download Word</button>
+        <button class="btn btn-primary" onclick="downloadPDF()">&#128462; Save as PDF</button>
+        <button class="btn btn-secondary" onclick="downloadMarkdown()">&#8595; Markdown</button>
+        <button class="btn btn-secondary" onclick="copyMarkdown()">&#9112; Copy Markdown</button>
+        <button class="btn btn-danger" onclick="startOver()">&#8635; Start Over</button>
+      </div>
+      <div class="result-content" id="resultContent">${caseHTML}</div>
+    </div>`;
+  }
+
+  // ── Init ──
+  render();
+
+  // ── Service Worker hint ──
+  // To make this a fully offline PWA, register a service worker:
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker.register('/sw.js');
+  // }
+  // The SW should cache this HTML file for offline use.
+
+})();
+</script>
+</body>
+</html>
