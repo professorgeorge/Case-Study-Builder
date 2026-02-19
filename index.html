@@ -485,14 +485,6 @@ select { cursor: pointer; }
 }
 .result-content li { margin-bottom: 0.4rem; }
 .result-content strong { color: var(--text); }
-.result-content .discussion-q {
-  background: var(--accent-light);
-  border-left: 3px solid var(--accent);
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0 6px 6px 0;
-  font-style: italic;
-}
 
 /* ── Toast ── */
 .toast {
@@ -874,7 +866,6 @@ select { cursor: pointer; }
   }
   .result-content h1 { font-size: 18pt; }
   .result-content h2 { font-size: 14pt; page-break-after: avoid; }
-  .result-content .discussion-q { background: #f0f0f0 !important; -webkit-print-color-adjust: exact; }
 }
 
 /* ── Responsive ── */
@@ -1580,60 +1571,7 @@ select { cursor: pointer; }
       if (data.ethicalConstraints) h += `<p><strong>Ethical / Regulatory:</strong> ${esc(data.ethicalConstraints)}</p>`;
     }
 
-    // Discussion Questions
-    h += `<h2>Discussion Questions</h2>`;
-    const questions = generateQuestions(validOpts, validSH);
-    questions.forEach(q => {
-      h += `<div class="discussion-q">${esc(q)}</div>`;
-    });
-
     return h;
-  }
-
-  function generateQuestions(opts, stakeholders) {
-    const qs = [];
-    
-    // Analysis questions
-    if (opts.length >= 1) {
-      qs.push(`What are the short-term and long-term consequences of pursuing "${opts[0].title}"? Consider financial, operational, and reputational impacts.`);
-    }
-    if (opts.length >= 2) {
-      qs.push(`Compare the risks and benefits of "${opts[0].title}" versus "${opts[1].title}." Which better serves the organization's strategic goals and why?`);
-    }
-    
-    // Stakeholder questions
-    if (stakeholders.length > 0) {
-      const names = stakeholders.slice(0, 3).map(s => s.name).join(', ');
-      qs.push(`How might the interests of key stakeholders (${names}) conflict, and how should management balance those tensions? What happens if one group's needs are prioritized over others?`);
-    }
-    
-    // Framework questions
-    if (data.problemType === 'Ethics') {
-      qs.push('Apply an ethical decision-making framework (e.g., utilitarianism, deontology, virtue ethics) to this situation. How does each framework inform the decision?');
-    } else if (data.problemType === 'Strategic') {
-      qs.push('What strategic frameworks (e.g., SWOT, Porter\'s Five Forces, PESTEL) would be most useful in analyzing this situation? Apply at least one framework to generate insights.');
-    }
-    
-    // Data and research questions
-    qs.push('What additional quantitative and qualitative data would you need before making a final recommendation? How would you obtain this information, and what challenges might you face?');
-    
-    // Decision-making questions
-    if (data.ethicalConstraints) {
-      qs.push('What ethical and regulatory considerations should guide the decision-making process? How might they override purely financial or operational logic?');
-    }
-    
-    // Implementation questions
-    if (opts.length > 0) {
-      qs.push('If you were to implement your recommended option, what would be your action plan? What are the critical success factors and potential obstacles?');
-    }
-    
-    // Alternative perspectives
-    qs.push('If you were in the decision maker\'s position, what would you decide and why? What assumptions underlie your choice, and how would you test them?');
-    
-    // Risk and contingency
-    qs.push('What are the key risks associated with your recommended course of action? What contingency plans should be in place?');
-    
-    return qs.slice(0, 8);
   }
 
   // ── Markdown ──
@@ -1693,9 +1631,6 @@ select { cursor: pointer; }
       if (data.ethicalConstraints) md += `**Ethical / Regulatory:** ${data.ethicalConstraints}\n\n`;
     }
 
-    md += `## Discussion Questions\n\n`;
-    const questions = generateQuestions(validOpts, validSH);
-    questions.forEach((q, i) => { md += `${i + 1}. ${q}\n`; });
     md += `\n---\n\n*Generated using the Case Study Builder, a teaching tool conceptualized by [Professor Babu George](https://www.linkedin.com/in/beingbabu/).*\n`;
 
     return md;
@@ -1713,7 +1648,6 @@ select { cursor: pointer; }
   .case-meta { font-family: Calibri, sans-serif; font-size: 10pt; color: #64748b; border-bottom: 2pt solid #eee; padding-bottom: 10pt; margin-bottom: 18pt; }
   ul, ol { margin-left: 0.3in; }
   li { margin-bottom: 4pt; }
-  .discussion-q { background: #e8eef6; border-left: 3pt solid #4a6fa5; padding: 8pt 12pt; margin-bottom: 6pt; font-style: italic; }
   p { margin-bottom: 8pt; }
   em { color: #555; }
 </style></head><body>${caseHTML}
