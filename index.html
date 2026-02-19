@@ -771,9 +771,87 @@ select { cursor: pointer; }
 }
 .app-footer a:hover { text-decoration: underline; }
 
+/* ── Student Note ── */
+.student-note {
+  max-width: var(--max-w);
+  margin: 3rem auto 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.student-note-header {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.student-note-icon {
+  font-size: 1.3rem;
+}
+.student-note-content {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.student-note-prompt {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+  position: relative;
+}
+.student-note-prompt-header {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.student-note-prompt-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+.student-note-prompt-copy {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+.student-note-prompt-copy:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.student-note-prompt-copy:active {
+  transform: translateY(0);
+}
+
 /* ── Print styles ── */
 @media print {
-  .app-header, .progress-wrap, .nav-row, .result-actions, .app-footer, .step-dots { display: none !important; }
+  .app-header, .progress-wrap, .nav-row, .result-actions, .app-footer, .step-dots, .student-note { display: none !important; }
   .main { padding: 0; }
   .result-content {
     max-height: none;
@@ -838,6 +916,37 @@ select { cursor: pointer; }
 <!-- Main -->
 <main class="main" id="app"></main>
 
+<!-- Student Note on AI Enhancement -->
+<section class="student-note">
+  <div class="student-note-header">
+    <span class="student-note-icon">✨</span>
+    Student Note: AI Enhancement
+  </div>
+  <div class="student-note-content">
+    <p>Before submitting your case study for evaluation, consider using an AI assistant like ChatGPT, Claude, or Gemini to refine and expand your draft into a more comprehensive version. This step can help polish structure, add depth to analysis, and ensure clarity without changing core facts.</p>
+  </div>
+  <div class="student-note-prompt">
+    <div class="student-note-prompt-header">Recommended Prompt (Click to Copy)</div>
+    <button class="student-note-prompt-copy" onclick="copyAIPrompt()">📋 Copy Prompt</button>
+    <div class="student-note-prompt-text" id="aiPromptText">You are an expert business case study writer for management education. Take this draft case study attached and revise as needed.
+
+Develop it into a full, professional case study (2,000-4,000 words) without adding new facts, misrepresenting any details, or fabricating data—only enhance clarity, expand analysis, improve flow, and elaborate on existing elements using logical inference. Minor modifications that don't significantly change the case study are welcome if they permit the case study to be crafted better.
+
+Structure it with these sections:
+- Executive Summary (200-300 words)
+- Company Background (expanded from overview)
+- Detailed Problem Statement (with context and implications)
+- Key Stakeholders and Perspectives
+- Decision Options (pros/cons, risks for each)
+- Constraints (financial, timeline, ethical/regulatory)
+- In-Depth Analysis (apply 2-3 frameworks like SWOT, Porter's Five Forces, PESTEL)
+- Discussion Questions (8-10 refined, open-ended ones)
+- Teaching Notes (optional: potential outcomes, key lessons)
+
+Use engaging, academic language. Add transitions, examples from the draft, and quantitative emphasis where present. Ensure neutrality and focus on decision-making.</div>
+  </div>
+</section>
+
 <!-- Footer -->
 <footer class="app-footer">
   <p>
@@ -889,7 +998,7 @@ select { cursor: pointer; }
 
   const data = {
     title: '', industry: '', company: '', region: '', year: new Date().getFullYear().toString(),
-    role: '', experience: '', background: '',
+    role: '', decisionMakerName: '', experience: '', background: '',
     problem: '', problemType: '',
     stakeholders: [{ name: '', interest: '' }],
     options: [{ title: '', description: '', implication: '' }, { title: '', description: '', implication: '' }],
@@ -1030,6 +1139,7 @@ select { cursor: pointer; }
         data.year = v('f-year');
         break;
       case 1:
+        data.decisionMakerName = v('f-name');
         data.role = v('f-role');
         data.experience = v('f-exp');
         data.background = v('f-bg');
@@ -1239,6 +1349,7 @@ select { cursor: pointer; }
 
       case 1:
         html += `<div class="card-hint">Who is the protagonist? Describe the person facing the decision.</div></div>`;
+        html += field('Name', 'f-name', 'text', data.decisionMakerName, 'e.g., Jane Smith', true, 'The decision-maker\'s name (optional, can use a pseudonym or leave blank)');
         html += field('Role / Title', 'f-role', 'text', data.role, 'e.g., CEO, Department Head, Project Manager', false, 'The decision-maker\'s position influences their perspective and authority');
         html += field('Years of Experience', 'f-exp', 'number', data.experience, 'Approximate number', false, 'Experience level affects credibility and decision-making approach');
         html += fieldTextarea('Previous Background', 'f-bg', data.background, 'Briefly describe their career path or relevant expertise (2-3 sentences).', 3, 'Background provides context for their expertise and potential biases');
@@ -1429,7 +1540,9 @@ select { cursor: pointer; }
     h += `<h2>Company Overview</h2>`;
     h += `<p>${esc(companyDisplay)} operates in the <strong>${esc(industry.toLowerCase())}</strong> sector in <strong>${esc(region)}</strong>.`;
     if (data.role) {
-      h += ` The case centers on a <strong>${esc(data.role)}</strong>`;
+      h += ` The case centers on`;
+      if (data.decisionMakerName) h += ` <strong>${esc(data.decisionMakerName)}</strong>,`;
+      h += ` a <strong>${esc(data.role)}</strong>`;
       if (data.experience) h += ` with approximately ${esc(data.experience)} years of professional experience`;
       h += `.`;
     }
@@ -1547,7 +1660,9 @@ select { cursor: pointer; }
     md += `## Company Overview\n\n`;
     md += `${company} operates in the ${industry.toLowerCase()} sector in ${region}.`;
     if (data.role) {
-      md += ` The case centers on a ${data.role}`;
+      md += ` The case centers on`;
+      if (data.decisionMakerName) md += ` ${data.decisionMakerName},`;
+      md += ` a ${data.role}`;
       if (data.experience) md += ` with approximately ${data.experience} years of professional experience`;
       md += `.`;
     }
@@ -1688,6 +1803,20 @@ select { cursor: pointer; }
       document.execCommand('copy');
       document.body.removeChild(ta);
       showToast('Copied to clipboard', 'success');
+    });
+  };
+
+  window.copyAIPrompt = function() {
+    const promptText = document.getElementById('aiPromptText').textContent;
+    navigator.clipboard.writeText(promptText).then(() => showToast('AI Prompt copied to clipboard!', 'success')).catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = promptText;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('AI Prompt copied to clipboard!', 'success');
     });
   };
 
