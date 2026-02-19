@@ -1,8 +1,9 @@
 // Service Worker for Case Study Builder PWA
-const CACHE_NAME = 'case-study-builder-v1.2';
+const CACHE_NAME = 'case-study-builder-v1.3';
 const urlsToCache = [
   './',
-  './index.html'
+  './index.html',
+  './help.html'
 ];
 
 // Install event - cache resources
