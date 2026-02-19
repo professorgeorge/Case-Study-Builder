@@ -75,6 +75,9 @@
   .student-note-prompt-text {
     color: #e2e8f0; /* Light gray text for dark mode */
   }
+  .student-note {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  }
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
@@ -783,6 +786,7 @@ select { cursor: pointer; }
   border-left: 4px solid var(--accent);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: none;
 }
 .student-note-header {
   font-size: 1.1rem;
@@ -920,7 +924,7 @@ select { cursor: pointer; }
 <main class="main" id="app"></main>
 
 <!-- Student Note on AI Enhancement -->
-<section class="student-note">
+<section class="student-note" id="studentNote">
   <div class="student-note-header">
     <span class="student-note-icon">✨</span>
     Student Note: AI Enhancement
@@ -1333,6 +1337,7 @@ Use engaging, academic language. Add transitions, examples from the draft, and q
   // ── Render ──
   function render() {
     updateProgress();
+    $('studentNote').style.display = showingResult ? 'block' : 'none';
     if (showingResult) return renderResult();
 
     let html = '<div class="card">';
