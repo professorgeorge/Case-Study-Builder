@@ -10,26 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
-<!-- PWA Manifest (inline via link blob) -->
-<script>
-(function(){
-  const manifest = {
-    name: "Case Study Builder",
-    short_name: "CaseBuilder",
-    description: "Step-by-step management case study generator for classroom use.",
-    start_url: ".",
-    display: "standalone",
-    background_color: "#faf8f5",
-    theme_color: "#1e293b",
-    icons: []
-  };
-  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
-  const link = document.createElement('link');
-  link.rel = 'manifest';
-  link.href = URL.createObjectURL(blob);
-  document.head.appendChild(link);
-})();
-</script>
+<!-- PWA Manifest -->
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNhc2UgU3R1ZHkgQnVpbGRlciAtIEJ1c2luZXNzIE1hbmFnZW1lbnQgVGVhY2hpbmcgVG9vbCIsCiAgInNob3J0X25hbWUiOiAiQ2FzZSBCdWlsZGVyIiwKICAiZGVzY3JpcHRpb24iOiAiQW4gaW50ZXJhY3RpdmUgY2FzZSBzdHVkeSBidWlsZGVyIGZvciBidXNpbmVzcyBtYW5hZ2VtZW50IHN0dWRlbnRzLiBDcmVhdGUgY29tcHJlaGVuc2l2ZSwgdGhvdWdodC1wcm92b2tpbmcgY2FzZSBzdHVkaWVzIGZvciBjbGFzc3Jvb20gdXNlLiIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmYWY4ZjUiLAogICJ0aGVtZV9jb2xvciI6ICIjMWUyOTNiIiwKICAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyUzRSUzQ3JlY3QgZmlsbD0nJTIzMWUyOTNiJyB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5Micgcng9JzI0Jy8lM0UlM0N0ZXh0IHg9JzUwJTI1JyB5PSc1MCUyNScgZm9udC1mYW1pbHk9J3NlcmlmJyBmb250LXNpemU9JzgwJyBmaWxsPSclMjNmZmYnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGRvbWluYW50LWJhc2VsaW5lPSdtaWRkbGUnJTNFJUYwJTlGJTkzJTlBJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyUzRSUzQ3JlY3QgZmlsbD0nJTIzMWUyOTNiJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzY0Jy8lM0UlM0N0ZXh0IHg9JzUwJTI1JyB5PSc1MCUyNScgZm9udC1mYW1pbHk9J3NlcmlmJyBmb250LXNpemU9JzI0MCcgZmlsbD0nJTIzZmZmJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyUzRSVGMCU5RiU5MyU5QSUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Case Builder">
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,14 +33,45 @@
   --border: #e2e0db;
   --border-light: #f0eee9;
   --danger: #b91c1c;
+  --danger-light: #fef2f2;
   --success: #15803d;
+  --success-light: #dcfce7;
+  --warning: #ca8a04;
+  --warning-light: #fef3c7;
+  --info: #0284c7;
+  --info-light: #e0f2fe;
   --radius: 8px;
+  --radius-sm: 6px;
+  --radius-lg: 12px;
   --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
   --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.06);
+  --shadow-xl: 0 10px 25px rgba(0,0,0,0.1), 0 20px 48px rgba(0,0,0,0.08);
   --font-serif: 'Crimson Pro', Georgia, serif;
   --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --max-w: 720px;
   --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --text-light: #64748b;
+    --accent: #60a5fa;
+    --accent-light: #1e3a5f;
+    --accent-hover: #93c5fd;
+    --gold: #fbbf24;
+    --gold-light: #422006;
+    --border: #334155;
+    --border-light: #1e293b;
+    --danger-light: #450a0a;
+    --success-light: #14532d;
+    --warning-light: #422006;
+    --info-light: #0c4a6e;
+  }
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
@@ -105,6 +121,59 @@ body {
   padding: 4px 10px;
   border-radius: 20px;
   white-space: nowrap;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.4rem;
+  border-radius: 6px;
+  transition: all var(--transition);
+  position: relative;
+  line-height: 1;
+}
+.icon-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.icon-btn .badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.65rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+.tooltip {
+  position: absolute;
+  background: var(--text);
+  color: #fff;
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition);
+  z-index: 1001;
+  box-shadow: var(--shadow-lg);
+}
+.icon-btn:hover .tooltip {
+  opacity: 1;
 }
 
 /* ── Progress ── */
@@ -441,6 +510,247 @@ select { cursor: pointer; }
   pointer-events: none;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger); }
+.toast.warning { background: var(--warning); }
+.toast.info { background: var(--info); }
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.modal-overlay.show {
+  display: flex;
+  opacity: 1;
+}
+.modal {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95) translateY(20px);
+  transition: transform var(--transition);
+}
+.modal-overlay.show .modal {
+  transform: scale(1) translateY(0);
+}
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  border-radius: 4px;
+  transition: all var(--transition);
+}
+.modal-close:hover {
+  background: var(--border-light);
+  color: var(--text);
+}
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* ── Saved Cases List ── */
+.saved-case-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.saved-case-item:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+.saved-case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+.saved-case-title {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+.saved-case-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.saved-case-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+.saved-case-actions button {
+  background: none;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  transition: all var(--transition);
+}
+.saved-case-actions button:hover {
+  background: var(--border-light);
+  color: var(--text);
+}
+.saved-case-actions button.delete:hover {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+}
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+.empty-state-text {
+  font-size: 0.9rem;
+}
+
+/* ── Auto-save indicator ── */
+.auto-save-indicator {
+  position: fixed;
+  top: 5rem;
+  right: 1rem;
+  background: var(--success);
+  color: #fff;
+  padding: 0.5rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  z-index: 100;
+}
+.auto-save-indicator.show {
+  opacity: 1;
+}
+.auto-save-indicator.saving {
+  background: var(--info);
+}
+
+/* ── Field validation ── */
+.field.error input,
+.field.error textarea,
+.field.error select {
+  border-color: var(--danger);
+}
+.field.error .error-message {
+  display: block;
+}
+.error-message {
+  display: none;
+  color: var(--danger);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* ── Help tooltips ── */
+.field-help {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  background: var(--border);
+  color: var(--text-muted);
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-left: 0.25rem;
+  cursor: help;
+  position: relative;
+}
+.field-help:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.field-help .help-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  white-space: normal;
+  width: 220px;
+  text-align: left;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  z-index: 1001;
+}
+.field-help:hover .help-tooltip {
+  opacity: 1;
+}
+.field-help .help-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--text);
+}
 
 /* ── Footer ── */
 .app-footer {
@@ -500,7 +810,16 @@ select { cursor: pointer; }
       <div class="app-title">Case Study Builder</div>
       <div class="app-subtitle">Management Teaching Tool</div>
     </div>
-    <div class="header-badge">Client-Side Only</div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleSavedCases()" title="Saved Cases" aria-label="View saved cases">
+        📚
+        <span id="savedCountBadge" class="badge" style="display:none;">0</span>
+      </button>
+      <button class="icon-btn" onclick="saveCurrentCase()" title="Save Progress" aria-label="Save current case">
+        💾
+      </button>
+      <div class="header-badge">Offline PWA</div>
+    </div>
   </div>
 </header>
 
@@ -531,6 +850,24 @@ select { cursor: pointer; }
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- Auto-save indicator -->
+<div class="auto-save-indicator" id="autoSaveIndicator">
+  <span id="autoSaveText">✓ Saved</span>
+</div>
+
+<!-- Modal for saved cases -->
+<div class="modal-overlay" id="savedCasesModal" onclick="if(event.target===this) toggleSavedCases()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Saved Case Studies</h2>
+      <button class="modal-close" onclick="toggleSavedCases()" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body" id="savedCasesList">
+      <!-- Populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
 <script>
 (function() {
   'use strict';
@@ -547,6 +884,8 @@ select { cursor: pointer; }
 
   let currentStep = 0;
   let showingResult = false;
+  let autoSaveTimeout = null;
+  let currentCaseId = null;
 
   const data = {
     title: '', industry: '', company: '', region: '', year: new Date().getFullYear().toString(),
@@ -560,10 +899,96 @@ select { cursor: pointer; }
   const $ = id => document.getElementById(id);
   const app = $('app');
 
+  // ── LocalStorage helpers ──
+  const STORAGE_KEY = 'caseStudyBuilder';
+  const AUTOSAVE_KEY = 'caseStudyBuilder_autosave';
+  const CASES_KEY = 'caseStudyBuilder_savedCases';
+
+  function loadSavedCases() {
+    try {
+      const saved = localStorage.getItem(CASES_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error('Error loading saved cases:', e);
+      return [];
+    }
+  }
+
+  function saveCases(cases) {
+    try {
+      localStorage.setItem(CASES_KEY, JSON.stringify(cases));
+      updateSavedCasesBadge();
+    } catch (e) {
+      console.error('Error saving cases:', e);
+      showToast('Error saving case', 'error');
+    }
+  }
+
+  function loadAutoSave() {
+    try {
+      const saved = localStorage.getItem(AUTOSAVE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        Object.assign(data, parsed.data);
+        currentStep = parsed.currentStep || 0;
+        currentCaseId = parsed.caseId || null;
+        return true;
+      }
+    } catch (e) {
+      console.error('Error loading autosave:', e);
+    }
+    return false;
+  }
+
+  function autoSave() {
+    clearTimeout(autoSaveTimeout);
+    autoSaveTimeout = setTimeout(() => {
+      try {
+        const saveData = {
+          data: { ...data },
+          currentStep,
+          caseId: currentCaseId,
+          timestamp: Date.now()
+        };
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(saveData));
+        showAutoSaveIndicator();
+      } catch (e) {
+        console.error('Error auto-saving:', e);
+      }
+    }, 1000);
+  }
+
+  function showAutoSaveIndicator(saving = false) {
+    const indicator = $('autoSaveIndicator');
+    const text = $('autoSaveText');
+    indicator.classList.remove('saving');
+    if (saving) {
+      indicator.classList.add('saving');
+      text.textContent = '💾 Saving...';
+    } else {
+      text.textContent = '✓ Saved';
+    }
+    indicator.classList.add('show');
+    setTimeout(() => indicator.classList.remove('show'), 2000);
+  }
+
+  function updateSavedCasesBadge() {
+    const cases = loadSavedCases();
+    const badge = $('savedCountBadge');
+    if (cases.length > 0) {
+      badge.textContent = cases.length;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
   // ── Toast ──
-  function showToast(msg) {
+  function showToast(msg, type = 'default') {
     const t = $('toast');
     t.textContent = msg;
+    t.className = 'toast';
+    if (type !== 'default') t.classList.add(type);
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2200);
   }
@@ -638,9 +1063,156 @@ select { cursor: pointer; }
         data.ethicalConstraints = v('f-ethics');
         break;
     }
+    autoSave();
   }
 
   function v(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+  // ── Saved Cases Management ──
+  window.saveCurrentCase = function() {
+    saveCurrentStep();
+    
+    const caseName = data.title || 'Untitled Case Study';
+    const cases = loadSavedCases();
+    
+    if (currentCaseId) {
+      // Update existing case
+      const idx = cases.findIndex(c => c.id === currentCaseId);
+      if (idx !== -1) {
+        cases[idx] = {
+          id: currentCaseId,
+          name: caseName,
+          data: { ...data },
+          currentStep,
+          savedAt: Date.now()
+        };
+        showToast('Case updated successfully!', 'success');
+      }
+    } else {
+      // Save as new case
+      currentCaseId = 'case_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      cases.push({
+        id: currentCaseId,
+        name: caseName,
+        data: { ...data },
+        currentStep,
+        savedAt: Date.now()
+      });
+      showToast('Case saved successfully!', 'success');
+    }
+    
+    saveCases(cases);
+  };
+
+  window.toggleSavedCases = function() {
+    const modal = $('savedCasesModal');
+    const isShown = modal.classList.contains('show');
+    
+    if (isShown) {
+      modal.classList.remove('show');
+    } else {
+      renderSavedCases();
+      modal.classList.add('show');
+    }
+  };
+
+  function renderSavedCases() {
+    const cases = loadSavedCases().sort((a, b) => b.savedAt - a.savedAt);
+    const container = $('savedCasesList');
+    
+    if (cases.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📚</div>
+          <div class="empty-state-text">No saved cases yet.<br>Save your progress to access it later!</div>
+        </div>`;
+      return;
+    }
+    
+    let html = '';
+    cases.forEach(c => {
+      const date = new Date(c.savedAt).toLocaleString();
+      const isCurrent = c.id === currentCaseId;
+      html += `
+        <div class="saved-case-item" onclick="loadCase('${c.id}')">
+          <div class="saved-case-header">
+            <div>
+              <div class="saved-case-title">${esc(c.name)}${isCurrent ? ' <span style="color:var(--accent);font-size:0.8rem;">(Current)</span>' : ''}</div>
+              <div class="saved-case-meta">
+                ${c.data.industry || 'No industry'} · ${c.data.region || 'No region'} · Saved ${date}
+              </div>
+            </div>
+            <div class="saved-case-actions" onclick="event.stopPropagation()">
+              <button onclick="loadCase('${c.id}')" title="Load">📂</button>
+              <button onclick="duplicateCase('${c.id}')" title="Duplicate">📋</button>
+              <button class="delete" onclick="deleteCase('${c.id}')" title="Delete">🗑️</button>
+            </div>
+          </div>
+        </div>`;
+    });
+    
+    container.innerHTML = html;
+  }
+
+  window.loadCase = function(caseId) {
+    const cases = loadSavedCases();
+    const caseData = cases.find(c => c.id === caseId);
+    
+    if (!caseData) {
+      showToast('Case not found', 'error');
+      return;
+    }
+    
+    if (confirm(`Load "${caseData.name}"? Any unsaved changes will be lost.`)) {
+      Object.assign(data, caseData.data);
+      currentStep = caseData.currentStep || 0;
+      currentCaseId = caseId;
+      showingResult = false;
+      toggleSavedCases();
+      render();
+      showToast('Case loaded!', 'success');
+      window.scrollTo(0, 0);
+    }
+  };
+
+  window.duplicateCase = function(caseId) {
+    const cases = loadSavedCases();
+    const caseData = cases.find(c => c.id === caseId);
+    
+    if (!caseData) {
+      showToast('Case not found', 'error');
+      return;
+    }
+    
+    const newId = 'case_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    const newCase = {
+      id: newId,
+      name: caseData.name + ' (Copy)',
+      data: { ...caseData.data },
+      currentStep: caseData.currentStep,
+      savedAt: Date.now()
+    };
+    
+    cases.push(newCase);
+    saveCases(cases);
+    renderSavedCases();
+    showToast('Case duplicated!', 'success');
+  };
+
+  window.deleteCase = function(caseId) {
+    if (!confirm('Delete this case? This cannot be undone.')) return;
+    
+    let cases = loadSavedCases();
+    cases = cases.filter(c => c.id !== caseId);
+    saveCases(cases);
+    
+    if (currentCaseId === caseId) {
+      currentCaseId = null;
+    }
+    
+    renderSavedCases();
+    showToast('Case deleted', 'info');
+  };
 
   // ── Render ──
   function render() {
@@ -655,24 +1227,24 @@ select { cursor: pointer; }
     switch (currentStep) {
       case 0:
         html += `<div class="card-hint">Set the scene for your case study. Where and when does it take place?</div></div>`;
-        html += field('Title', 'f-title', 'text', data.title, 'e.g., "Digital Transformation at Acme Corp"');
-        html += fieldSelect('Industry', 'f-industry', data.industry, ['','Technology','Healthcare','Finance','Retail','Manufacturing','Education','Energy','Hospitality','Transportation','Other']);
-        html += field('Company Name', 'f-company', 'text', data.company, 'Real or fictional', true);
-        html += field('Country or Region', 'f-region', 'text', data.region, 'e.g., United States, Southeast Asia');
-        html += field('Year', 'f-year', 'text', data.year, 'e.g., 2024 or "current year"');
+        html += field('Title', 'f-title', 'text', data.title, 'e.g., "Digital Transformation at Acme Corp"', false, 'A compelling title that captures the essence of the case');
+        html += fieldSelect('Industry', 'f-industry', data.industry, ['','Technology','Healthcare','Finance','Retail','Manufacturing','Education','Energy','Hospitality','Transportation','Other'], 'Select the primary industry sector');
+        html += field('Company Name', 'f-company', 'text', data.company, 'Real or fictional', true, 'Use a real company or create a fictional one');
+        html += field('Country or Region', 'f-region', 'text', data.region, 'e.g., United States, Southeast Asia', false, 'Geographic context helps students understand cultural and regulatory factors');
+        html += field('Year', 'f-year', 'text', data.year, 'e.g., 2024 or "current year"', false, 'Temporal context is important for technological and market conditions');
         break;
 
       case 1:
         html += `<div class="card-hint">Who is the protagonist? Describe the person facing the decision.</div></div>`;
-        html += field('Role / Title', 'f-role', 'text', data.role, 'e.g., CEO, Department Head, Project Manager');
-        html += field('Years of Experience', 'f-exp', 'number', data.experience, 'Approximate number');
-        html += fieldTextarea('Previous Background', 'f-bg', data.background, 'Briefly describe their career path or relevant expertise (2-3 sentences).', 3);
+        html += field('Role / Title', 'f-role', 'text', data.role, 'e.g., CEO, Department Head, Project Manager', false, 'The decision-maker\'s position influences their perspective and authority');
+        html += field('Years of Experience', 'f-exp', 'number', data.experience, 'Approximate number', false, 'Experience level affects credibility and decision-making approach');
+        html += fieldTextarea('Previous Background', 'f-bg', data.background, 'Briefly describe their career path or relevant expertise (2-3 sentences).', 3, 'Background provides context for their expertise and potential biases');
         break;
 
       case 2:
         html += `<div class="card-hint">What challenge or opportunity does the decision maker face? Be specific.</div></div>`;
-        html += fieldTextarea('Situation Description', 'f-problem', data.problem, 'Describe the core problem or opportunity in 2-3 sentences.', 4);
-        html += `<div class="field"><label>Category <span class="optional">(optional)</span></label>`;
+        html += fieldTextarea('Situation Description', 'f-problem', data.problem, 'Describe the core problem or opportunity in 2-3 sentences.', 4, 'Be specific about the challenge. What decision needs to be made and why?');
+        html += `<div class="field"><label>Category <span class="optional">(optional)</span><span class="field-help">?<span class="help-tooltip">Categorizing helps students identify relevant frameworks and analysis methods</span></span></label>`;
         html += radioGroup('problemType', ['Strategic','Operational','Leadership / HR','Ethics','Risk / Finance'], data.problemType);
         html += `</div>`;
         break;
@@ -726,17 +1298,22 @@ select { cursor: pointer; }
   }
 
   // ── Field helpers ──
-  function field(label, id, type, val, placeholder, optional) {
+  function field(label, id, type, val, placeholder, optional, helpText) {
     const opt = optional ? ` <span class="optional">(optional)</span>` : '';
-    return `<div class="field"><label for="${id}">${label}${opt}</label>
-      <input type="${type}" id="${id}" value="${esc(val)}" placeholder="${esc(placeholder)}"></div>`;
+    const help = helpText ? `<span class="field-help">?<span class="help-tooltip">${esc(helpText)}</span></span>` : '';
+    return `<div class="field"><label for="${id}">${label}${opt}${help}</label>
+      <input type="${type}" id="${id}" value="${esc(val)}" placeholder="${esc(placeholder)}" oninput="autoSave()">
+      <span class="error-message">This field is required</span></div>`;
   }
-  function fieldTextarea(label, id, val, placeholder, rows) {
-    return `<div class="field"><label for="${id}">${label}</label>
-      <textarea id="${id}" rows="${rows}" placeholder="${esc(placeholder)}">${esc(val)}</textarea></div>`;
+  function fieldTextarea(label, id, val, placeholder, rows, helpText) {
+    const help = helpText ? `<span class="field-help">?<span class="help-tooltip">${esc(helpText)}</span></span>` : '';
+    return `<div class="field"><label for="${id}">${label}${help}</label>
+      <textarea id="${id}" rows="${rows}" placeholder="${esc(placeholder)}" oninput="autoSave()">${esc(val)}</textarea>
+      <span class="error-message">This field is required</span></div>`;
   }
-  function fieldSelect(label, id, val, opts) {
-    let h = `<div class="field"><label for="${id}">${label}</label><select id="${id}">`;
+  function fieldSelect(label, id, val, opts, helpText) {
+    const help = helpText ? `<span class="field-help">?<span class="help-tooltip">${esc(helpText)}</span></span>` : '';
+    let h = `<div class="field"><label for="${id}">${label}${help}</label><select id="${id}" onchange="autoSave()">`;
     opts.forEach(o => {
       const lab = o || '— Select —';
       h += `<option value="${esc(o)}"${o === val ? ' selected' : ''}>${lab}</option>`;
@@ -756,17 +1333,17 @@ select { cursor: pointer; }
     const rm = data.stakeholders.length > 1 ? `<button class="remove-btn" onclick="removeStakeholder(${i})" title="Remove">&times;</button>` : '';
     return `<div class="dynamic-item sh-item">
       ${rm}<div class="item-num">Stakeholder ${i + 1}</div>
-      <div class="field"><label>Name or Group</label><input class="sh-name" type="text" value="${esc(s.name)}" placeholder="e.g., Employees, Board of Directors"></div>
-      <div class="field"><label>Interest or Concern</label><input class="sh-interest" type="text" value="${esc(s.interest)}" placeholder="e.g., Job security, return on investment"></div>
+      <div class="field"><label>Name or Group</label><input class="sh-name" type="text" value="${esc(s.name)}" placeholder="e.g., Employees, Board of Directors" oninput="autoSave()"></div>
+      <div class="field"><label>Interest or Concern</label><input class="sh-interest" type="text" value="${esc(s.interest)}" placeholder="e.g., Job security, return on investment" oninput="autoSave()"></div>
     </div>`;
   }
   function optionItem(i, o) {
     const rm = data.options.length > 2 ? `<button class="remove-btn" onclick="removeOption(${i})" title="Remove">&times;</button>` : '';
     return `<div class="dynamic-item opt-item">
       ${rm}<div class="item-num">Option ${i + 1}</div>
-      <div class="field"><label>Title</label><input class="opt-title" type="text" value="${esc(o.title)}" placeholder="e.g., Invest in AI automation"></div>
-      <div class="field"><label>Description</label><textarea class="opt-desc" rows="2" placeholder="Briefly describe this course of action.">${esc(o.description)}</textarea></div>
-      <div class="field"><label>Likely Implication</label><input class="opt-imp" type="text" value="${esc(o.implication)}" placeholder="One sentence on the expected outcome."></div>
+      <div class="field"><label>Title</label><input class="opt-title" type="text" value="${esc(o.title)}" placeholder="e.g., Invest in AI automation" oninput="autoSave()"></div>
+      <div class="field"><label>Description</label><textarea class="opt-desc" rows="2" placeholder="Briefly describe this course of action." oninput="autoSave()">${esc(o.description)}</textarea></div>
+      <div class="field"><label>Likely Implication</label><input class="opt-imp" type="text" value="${esc(o.implication)}" placeholder="One sentence on the expected outcome." oninput="autoSave()"></div>
     </div>`;
   }
 
@@ -909,23 +1486,48 @@ select { cursor: pointer; }
 
   function generateQuestions(opts, stakeholders) {
     const qs = [];
+    
+    // Analysis questions
     if (opts.length >= 1) {
-      qs.push(`What are the short-term and long-term consequences of pursuing "${opts[0].title}"?`);
+      qs.push(`What are the short-term and long-term consequences of pursuing "${opts[0].title}"? Consider financial, operational, and reputational impacts.`);
     }
     if (opts.length >= 2) {
-      qs.push(`Compare the risks and benefits of "${opts[0].title}" versus "${opts[1].title}." Which better serves the organization's strategic goals?`);
+      qs.push(`Compare the risks and benefits of "${opts[0].title}" versus "${opts[1].title}." Which better serves the organization's strategic goals and why?`);
     }
+    
+    // Stakeholder questions
     if (stakeholders.length > 0) {
       const names = stakeholders.slice(0, 3).map(s => s.name).join(', ');
-      qs.push(`How might the interests of key stakeholders (${names}) conflict, and how should management balance those tensions?`);
+      qs.push(`How might the interests of key stakeholders (${names}) conflict, and how should management balance those tensions? What happens if one group's needs are prioritized over others?`);
     }
-    qs.push('What additional information would you need before making a final recommendation? How would you obtain it?');
+    
+    // Framework questions
+    if (data.problemType === 'Ethics') {
+      qs.push('Apply an ethical decision-making framework (e.g., utilitarianism, deontology, virtue ethics) to this situation. How does each framework inform the decision?');
+    } else if (data.problemType === 'Strategic') {
+      qs.push('What strategic frameworks (e.g., SWOT, Porter\'s Five Forces, PESTEL) would be most useful in analyzing this situation? Apply at least one framework to generate insights.');
+    }
+    
+    // Data and research questions
+    qs.push('What additional quantitative and qualitative data would you need before making a final recommendation? How would you obtain this information, and what challenges might you face?');
+    
+    // Decision-making questions
     if (data.ethicalConstraints) {
-      qs.push('What ethical considerations should guide the decision-making process, and how might they override purely financial logic?');
-    } else {
-      qs.push('If you were in the decision maker\'s position, what would you decide and why? What assumptions underlie your choice?');
+      qs.push('What ethical and regulatory considerations should guide the decision-making process? How might they override purely financial or operational logic?');
     }
-    return qs.slice(0, 5);
+    
+    // Implementation questions
+    if (opts.length > 0) {
+      qs.push('If you were to implement your recommended option, what would be your action plan? What are the critical success factors and potential obstacles?');
+    }
+    
+    // Alternative perspectives
+    qs.push('If you were in the decision maker\'s position, what would you decide and why? What assumptions underlie your choice, and how would you test them?');
+    
+    // Risk and contingency
+    qs.push('What are the key risks associated with your recommended course of action? What contingency plans should be in place?');
+    
+    return qs.slice(0, 8);
   }
 
   // ── Markdown ──
@@ -1015,7 +1617,7 @@ select { cursor: pointer; }
     const md = buildMarkdown();
     const slug = (data.title || 'case_study').replace(/[^a-z0-9]+/gi, '_').toLowerCase();
     downloadBlob(md, `${slug}.md`, 'text/markdown');
-    showToast('Markdown file downloaded');
+    showToast('Markdown file downloaded', 'success');
   };
 
   window.downloadWord = function() {
@@ -1030,17 +1632,51 @@ select { cursor: pointer; }
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('Word document downloaded');
+    showToast('Word document downloaded', 'success');
   };
 
   window.downloadPDF = function() {
     window.print();
-    showToast('Use your browser\'s Save as PDF option');
+    showToast('Use your browser\'s Save as PDF option', 'info');
+  };
+
+  window.downloadJSON = function() {
+    const exportData = {
+      title: data.title,
+      metadata: {
+        industry: data.industry,
+        company: data.company,
+        region: data.region,
+        year: data.year
+      },
+      decisionMaker: {
+        role: data.role,
+        experience: data.experience,
+        background: data.background
+      },
+      problem: {
+        description: data.problem,
+        type: data.problemType
+      },
+      stakeholders: data.stakeholders.filter(s => s.name),
+      options: data.options.filter(o => o.title),
+      constraints: {
+        budget: data.budget,
+        timeline: data.timeline,
+        ethical: data.ethicalConstraints
+      },
+      exportedAt: new Date().toISOString()
+    };
+    
+    const json = JSON.stringify(exportData, null, 2);
+    const slug = (data.title || 'case_study').replace(/[^a-z0-9]+/gi, '_').toLowerCase();
+    downloadBlob(json, `${slug}.json`, 'application/json');
+    showToast('JSON file downloaded', 'success');
   };
 
   window.copyMarkdown = function() {
     const md = buildMarkdown();
-    navigator.clipboard.writeText(md).then(() => showToast('Copied to clipboard')).catch(() => {
+    navigator.clipboard.writeText(md).then(() => showToast('Copied to clipboard', 'success')).catch(() => {
       // Fallback
       const ta = document.createElement('textarea');
       ta.value = md;
@@ -1048,7 +1684,7 @@ select { cursor: pointer; }
       ta.select();
       document.execCommand('copy');
       document.body.removeChild(ta);
-      showToast('Copied to clipboard');
+      showToast('Copied to clipboard', 'success');
     });
   };
 
@@ -1069,25 +1705,84 @@ select { cursor: pointer; }
     const caseHTML = buildCaseHTML();
     app.innerHTML = `<div class="result-wrap">
       <div class="result-actions">
-        <button class="btn btn-primary" onclick="downloadWord()">&#128196; Download Word</button>
-        <button class="btn btn-primary" onclick="downloadPDF()">&#128462; Save as PDF</button>
-        <button class="btn btn-secondary" onclick="downloadMarkdown()">&#8595; Markdown</button>
-        <button class="btn btn-secondary" onclick="copyMarkdown()">&#9112; Copy Markdown</button>
-        <button class="btn btn-danger" onclick="startOver()">&#8635; Start Over</button>
+        <button class="btn btn-primary" onclick="downloadWord()">📄 Download Word</button>
+        <button class="btn btn-primary" onclick="downloadPDF()">🖨️ Save as PDF</button>
+        <button class="btn btn-secondary" onclick="downloadMarkdown()">⬇️ Markdown</button>
+        <button class="btn btn-secondary" onclick="downloadJSON()">📊 JSON</button>
+        <button class="btn btn-secondary" onclick="copyMarkdown()">📋 Copy</button>
+        <button class="btn btn-danger" onclick="startOver()">↻ Start Over</button>
       </div>
       <div class="result-content" id="resultContent">${caseHTML}</div>
     </div>`;
   }
 
   // ── Init ──
+  // Load autosave on startup
+  const hasAutoSave = loadAutoSave();
+  if (hasAutoSave && !showingResult) {
+    console.log('Restored from autosave');
+  }
+  
+  // Update saved cases badge
+  updateSavedCasesBadge();
+  
+  // Render initial view
   render();
 
-  // ── Service Worker hint ──
-  // To make this a fully offline PWA, register a service worker:
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker.register('/sw.js');
-  // }
-  // The SW should cache this HTML file for offline use.
+  // ── Service Worker Registration ──
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(registration => {
+          console.log('ServiceWorker registered:', registration.scope);
+          
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                showToast('New version available! Reload to update.', 'info');
+              }
+            });
+          });
+        })
+        .catch(err => console.log('ServiceWorker registration failed:', err));
+    });
+  }
+
+  // ── PWA Install Prompt ──
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show install button or notification
+    setTimeout(() => {
+      if (confirm('Install Case Study Builder as an app for offline use?')) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showToast('App installed successfully!', 'success');
+          }
+          deferredPrompt = null;
+        });
+      }
+    }, 3000);
+  });
+
+  // ── Keyboard shortcuts ──
+  document.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + S to save
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      saveCurrentCase();
+    }
+    // Ctrl/Cmd + K to open saved cases
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      toggleSavedCases();
+    }
+  });
 
 })();
 </script>
