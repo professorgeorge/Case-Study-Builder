@@ -1354,7 +1354,7 @@ select { cursor: pointer; }
       case 2:
         html += `<div class="card-hint">What challenge or opportunity does the decision maker face? Be specific.</div></div>`;
         html += fieldTextarea('Situation Description', 'f-problem', data.problem, 'Describe the core problem or opportunity in 2-3 sentences.', 4, 'Be specific about the challenge. What decision needs to be made and why?');
-        html += `<div class="field"><label>Category<span class="field-help">?<span class="help-tooltip">Categorizing helps students identify relevant frameworks and analysis methods</span></span></label>`;
+        html += `<div class="field"><label>Category <span class="field-help">?<span class="help-tooltip">Categorizing helps students identify relevant frameworks and analysis methods</span></span></label>`;
         html += radioGroup('problemType', ['Strategic','Operational','Leadership / HR','Ethics','Risk / Finance'], data.problemType);
         html += `</div>`;
         break;
@@ -1896,7 +1896,7 @@ select { cursor: pointer; }
       if (el !== helpBtn) el.classList.remove('active');
     });
     if (helpBtn) {
-      e.preventDefault();
+      e.stopPropagation();
       helpBtn.classList.toggle('active');
     }
   });
