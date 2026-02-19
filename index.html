@@ -957,6 +957,9 @@ select { cursor: pointer; }
       }
     }, 1000);
   }
+  
+  // Make autoSave available globally
+  window.autoSave = autoSave;
 
   function showAutoSaveIndicator(saving = false) {
     const indicator = $('autoSaveIndicator');
