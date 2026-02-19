@@ -78,15 +78,8 @@
   .student-note {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   }
-  .tooltip,
-  .field-help .help-tooltip {
-    background: #1e293b;
-    color: #f1f5f9;
-  }
-  .field-help .help-tooltip::after {
-    border-top-color: #1e293b;
-  }
 }
+
 
 html { font-size: 16px; scroll-behavior: smooth; }
 
@@ -174,8 +167,8 @@ body {
 }
 .tooltip {
   position: absolute;
-  background: var(--text);
-  color: #fff;
+  background: var(--accent-light);
+  color: var(--text);
   padding: 0.4rem 0.65rem;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -733,8 +726,8 @@ select { cursor: pointer; }
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--text);
-  color: #fff;
+  background: var(--accent-light);
+  color: var(--text);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -759,7 +752,7 @@ select { cursor: pointer; }
   left: 50%;
   transform: translateX(-50%);
   border: 6px solid transparent;
-  border-top-color: var(--text);
+  border-top-color: var(--accent-light);
 }
 
 /* ── Footer ── */
