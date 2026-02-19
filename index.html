@@ -1759,19 +1759,20 @@ select { cursor: pointer; }
     e.preventDefault();
     deferredPrompt = e;
     
-    // Show install button or notification
+    // Show a subtle notification instead of confirm dialog
     setTimeout(() => {
-      if (confirm('Install Case Study Builder as an app for offline use?')) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            showToast('App installed successfully!', 'success');
-          }
-          deferredPrompt = null;
-        });
-      }
-    }, 3000);
+      const installToast = document.createElement('div');
+      installToast.className = 'toast show';
+      installToast.innerHTML = '📱 Install this app for offline access! <button style="margin-left:10px;background:#fff;color:var(--text);border:none;padding:4px 12px;border-radius:4px;cursor:pointer;" onclick="this.parentElement.remove(); if(window.deferredPrompt) { window.deferredPrompt.prompt(); window.deferredPrompt.userChoice.then((r) => { if(r.outcome === \'accepted\') showToast(\'App installed!\', \'success\'); window.deferredPrompt = null; }); }">Install</button>';
+      document.body.appendChild(installToast);
+      
+      setTimeout(() => {
+        installToast.remove();
+      }, 8000);
+    }, 5000); // Show after 5 seconds
   });
+  
+  window.deferredPrompt = deferredPrompt;
 
   // ── Keyboard shortcuts ──
   document.addEventListener('keydown', (e) => {
