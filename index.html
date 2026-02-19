@@ -1540,9 +1540,11 @@ Use engaging, academic language. Add transitions, examples from the draft, and q
     h += `<h2>Company Overview</h2>`;
     h += `<p>${esc(companyDisplay)} operates in the <strong>${esc(industry.toLowerCase())}</strong> sector in <strong>${esc(region)}</strong>.`;
     if (data.role) {
-      h += ` The case centers on`;
-      if (data.decisionMakerName) h += ` <strong>${esc(data.decisionMakerName)}</strong>,`;
-      h += ` a <strong>${esc(data.role)}</strong>`;
+      if (data.decisionMakerName) {
+        h += ` The case centers on <strong>${esc(data.decisionMakerName)}</strong>, a <strong>${esc(data.role)}</strong>`;
+      } else {
+        h += ` The case centers on a <strong>${esc(data.role)}</strong>`;
+      }
       if (data.experience) h += ` with approximately ${esc(data.experience)} years of professional experience`;
       h += `.`;
     }
@@ -1660,9 +1662,11 @@ Use engaging, academic language. Add transitions, examples from the draft, and q
     md += `## Company Overview\n\n`;
     md += `${company} operates in the ${industry.toLowerCase()} sector in ${region}.`;
     if (data.role) {
-      md += ` The case centers on`;
-      if (data.decisionMakerName) md += ` ${data.decisionMakerName},`;
-      md += ` a ${data.role}`;
+      if (data.decisionMakerName) {
+        md += ` The case centers on ${data.decisionMakerName}, a ${data.role}`;
+      } else {
+        md += ` The case centers on a ${data.role}`;
+      }
       if (data.experience) md += ` with approximately ${data.experience} years of professional experience`;
       md += `.`;
     }
@@ -1809,7 +1813,7 @@ Use engaging, academic language. Add transitions, examples from the draft, and q
   window.copyAIPrompt = function() {
     const promptText = document.getElementById('aiPromptText').textContent;
     navigator.clipboard.writeText(promptText).then(() => showToast('AI Prompt copied to clipboard!', 'success')).catch(() => {
-      // Fallback
+      // Fallback for browsers that don't support the Clipboard API or when permissions are denied
       const ta = document.createElement('textarea');
       ta.value = promptText;
       document.body.appendChild(ta);
