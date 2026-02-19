@@ -78,6 +78,14 @@
   .student-note {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   }
+  .tooltip,
+  .field-help .help-tooltip {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+  .field-help .help-tooltip::after {
+    border-top-color: #1e293b;
+  }
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
@@ -284,11 +292,6 @@ body {
   font-weight: 600;
   color: var(--text);
   margin-bottom: 0.35rem;
-}
-.field .optional {
-  font-weight: 400;
-  color: var(--text-light);
-  font-size: 0.78rem;
 }
 input[type="text"], input[type="number"], select, textarea {
   width: 100%;
@@ -745,7 +748,8 @@ select { cursor: pointer; }
   transition: opacity var(--transition);
   z-index: 1001;
 }
-.field-help:hover .help-tooltip {
+.field-help:hover .help-tooltip,
+.field-help.active .help-tooltip {
   opacity: 1;
 }
 .field-help .help-tooltip::after {
@@ -1332,25 +1336,25 @@ select { cursor: pointer; }
     switch (currentStep) {
       case 0:
         html += `<div class="card-hint">Set the scene for your case study. Where and when does it take place?</div></div>`;
-        html += field('Title', 'f-title', 'text', data.title, 'e.g., "Digital Transformation at Acme Corp"', false, 'A compelling title that captures the essence of the case');
+        html += field('Title', 'f-title', 'text', data.title, 'e.g., "Digital Transformation at Acme Corp"', 'A compelling title that captures the essence of the case');
         html += fieldSelect('Industry', 'f-industry', data.industry, ['','Technology','Healthcare','Finance','Retail','Manufacturing','Education','Energy','Hospitality','Transportation','Other'], 'Select the primary industry sector');
-        html += field('Company Name', 'f-company', 'text', data.company, 'Real or fictional', true, 'Use a real company or create a fictional one');
-        html += field('Country or Region', 'f-region', 'text', data.region, 'e.g., United States, Southeast Asia', false, 'Geographic context helps students understand cultural and regulatory factors');
-        html += field('Year', 'f-year', 'text', data.year, 'e.g., 2024 or "current year"', false, 'Temporal context is important for technological and market conditions');
+        html += field('Company Name', 'f-company', 'text', data.company, 'Real or fictional', 'Use a real company or create a fictional one');
+        html += field('Country or Region', 'f-region', 'text', data.region, 'e.g., United States, Southeast Asia', 'Geographic context helps students understand cultural and regulatory factors');
+        html += field('Year', 'f-year', 'text', data.year, 'e.g., 2024 or "current year"', 'Temporal context is important for technological and market conditions');
         break;
 
       case 1:
         html += `<div class="card-hint">Who is the protagonist? Describe the person facing the decision.</div></div>`;
-        html += field('Name', 'f-name', 'text', data.decisionMakerName, 'e.g., Jane Smith', true, 'The decision-maker\'s name (optional, can use a pseudonym or leave blank)');
-        html += field('Role / Title', 'f-role', 'text', data.role, 'e.g., CEO, Department Head, Project Manager', false, 'The decision-maker\'s position influences their perspective and authority');
-        html += field('Years of Experience', 'f-exp', 'number', data.experience, 'Approximate number', false, 'Experience level affects credibility and decision-making approach');
+        html += field('Name', 'f-name', 'text', data.decisionMakerName, 'e.g., Jane Smith', 'The decision-maker\'s name');
+        html += field('Role / Title', 'f-role', 'text', data.role, 'e.g., CEO, Department Head, Project Manager', 'The decision-maker\'s position influences their perspective and authority');
+        html += field('Years of Experience', 'f-exp', 'number', data.experience, 'Approximate number', 'Experience level affects credibility and decision-making approach');
         html += fieldTextarea('Previous Background', 'f-bg', data.background, 'Briefly describe their career path or relevant expertise (2-3 sentences).', 3, 'Background provides context for their expertise and potential biases');
         break;
 
       case 2:
         html += `<div class="card-hint">What challenge or opportunity does the decision maker face? Be specific.</div></div>`;
         html += fieldTextarea('Situation Description', 'f-problem', data.problem, 'Describe the core problem or opportunity in 2-3 sentences.', 4, 'Be specific about the challenge. What decision needs to be made and why?');
-        html += `<div class="field"><label>Category <span class="optional">(optional)</span><span class="field-help">?<span class="help-tooltip">Categorizing helps students identify relevant frameworks and analysis methods</span></span></label>`;
+        html += `<div class="field"><label>Category<span class="field-help">?<span class="help-tooltip">Categorizing helps students identify relevant frameworks and analysis methods</span></span></label>`;
         html += radioGroup('problemType', ['Strategic','Operational','Leadership / HR','Ethics','Risk / Finance'], data.problemType);
         html += `</div>`;
         break;
@@ -1379,9 +1383,9 @@ select { cursor: pointer; }
 
       case 5:
         html += `<div class="card-hint">What real-world constraints does the decision maker face? These make the case more realistic and thought-provoking.</div></div>`;
-        html += fieldTextarea('Budget Limitations', 'f-budget', data.budget, 'e.g., "$500K allocated for this initiative"', 2);
-        html += fieldTextarea('Time Constraints', 'f-timeline', data.timeline, 'e.g., "Decision needed within 3 months"', 2);
-        html += fieldTextarea('Ethical or Regulatory Constraints', 'f-ethics', data.ethicalConstraints, 'e.g., "GDPR compliance required; union agreements in place"', 3);
+        html += fieldTextarea('Budget Limitations', 'f-budget', data.budget, 'e.g., "$500K allocated for this initiative"', 2, 'Financial constraints that limit what the decision maker can do');
+        html += fieldTextarea('Time Constraints', 'f-timeline', data.timeline, 'e.g., "Decision needed within 3 months"', 2, 'Deadlines or time pressures that affect the decision');
+        html += fieldTextarea('Ethical or Regulatory Constraints', 'f-ethics', data.ethicalConstraints, 'e.g., "GDPR compliance required; union agreements in place"', 3, 'Legal, ethical, or regulatory boundaries that must be respected');
         break;
     }
 
@@ -1404,10 +1408,9 @@ select { cursor: pointer; }
   }
 
   // ── Field helpers ──
-  function field(label, id, type, val, placeholder, optional, helpText) {
-    const opt = optional ? ` <span class="optional">(optional)</span>` : '';
+  function field(label, id, type, val, placeholder, helpText) {
     const help = helpText ? `<span class="field-help">?<span class="help-tooltip">${esc(helpText)}</span></span>` : '';
-    return `<div class="field"><label for="${id}">${label}${opt}${help}</label>
+    return `<div class="field"><label for="${id}">${label}${help}</label>
       <input type="${type}" id="${id}" value="${esc(val)}" placeholder="${esc(placeholder)}" oninput="autoSave()">
       <span class="error-message">This field is required</span></div>`;
   }
@@ -1439,17 +1442,17 @@ select { cursor: pointer; }
     const rm = data.stakeholders.length > 1 ? `<button class="remove-btn" onclick="removeStakeholder(${i})" title="Remove">&times;</button>` : '';
     return `<div class="dynamic-item sh-item">
       ${rm}<div class="item-num">Stakeholder ${i + 1}</div>
-      <div class="field"><label>Name or Group</label><input class="sh-name" type="text" value="${esc(s.name)}" placeholder="e.g., Employees, Board of Directors" oninput="autoSave()"></div>
-      <div class="field"><label>Interest or Concern</label><input class="sh-interest" type="text" value="${esc(s.interest)}" placeholder="e.g., Job security, return on investment" oninput="autoSave()"></div>
+      <div class="field"><label>Name or Group<span class="field-help">?<span class="help-tooltip">Identify a person, group, or entity affected by the decision</span></span></label><input class="sh-name" type="text" value="${esc(s.name)}" placeholder="e.g., Employees, Board of Directors" oninput="autoSave()"></div>
+      <div class="field"><label>Interest or Concern<span class="field-help">?<span class="help-tooltip">What does this stakeholder care about most in this situation?</span></span></label><input class="sh-interest" type="text" value="${esc(s.interest)}" placeholder="e.g., Job security, return on investment" oninput="autoSave()"></div>
     </div>`;
   }
   function optionItem(i, o) {
     const rm = data.options.length > 2 ? `<button class="remove-btn" onclick="removeOption(${i})" title="Remove">&times;</button>` : '';
     return `<div class="dynamic-item opt-item">
       ${rm}<div class="item-num">Option ${i + 1}</div>
-      <div class="field"><label>Title</label><input class="opt-title" type="text" value="${esc(o.title)}" placeholder="e.g., Invest in AI automation" oninput="autoSave()"></div>
-      <div class="field"><label>Description</label><textarea class="opt-desc" rows="2" placeholder="Briefly describe this course of action." oninput="autoSave()">${esc(o.description)}</textarea></div>
-      <div class="field"><label>Likely Implication</label><input class="opt-imp" type="text" value="${esc(o.implication)}" placeholder="One sentence on the expected outcome." oninput="autoSave()"></div>
+      <div class="field"><label>Title<span class="field-help">?<span class="help-tooltip">A short name for this course of action</span></span></label><input class="opt-title" type="text" value="${esc(o.title)}" placeholder="e.g., Invest in AI automation" oninput="autoSave()"></div>
+      <div class="field"><label>Description<span class="field-help">?<span class="help-tooltip">Explain what this option involves and how it would be implemented</span></span></label><textarea class="opt-desc" rows="2" placeholder="Briefly describe this course of action." oninput="autoSave()">${esc(o.description)}</textarea></div>
+      <div class="field"><label>Likely Implication<span class="field-help">?<span class="help-tooltip">What is the expected outcome or consequence of choosing this option?</span></span></label><input class="opt-imp" type="text" value="${esc(o.implication)}" placeholder="One sentence on the expected outcome." oninput="autoSave()"></div>
     </div>`;
   }
 
@@ -1884,6 +1887,19 @@ select { cursor: pointer; }
   });
   
   window.deferredPrompt = deferredPrompt;
+
+  // ── Tooltip click/touch support ──
+  document.addEventListener('click', (e) => {
+    const helpBtn = e.target.closest('.field-help');
+    // Close all other open tooltips first
+    document.querySelectorAll('.field-help.active').forEach(el => {
+      if (el !== helpBtn) el.classList.remove('active');
+    });
+    if (helpBtn) {
+      e.preventDefault();
+      helpBtn.classList.toggle('active');
+    }
+  });
 
   // ── Keyboard shortcuts ──
   document.addEventListener('keydown', (e) => {
